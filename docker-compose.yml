@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # PostgreSQL database
+  db:
+    image: postgres:13
+    container_name: linkedin_ai_db
+    environment:
+      POSTGRES_DB: linkedin_ai
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - linkedin_ai_network
+
+  # Redis cache
+  redis:
+    image: redis:6-alpine
+    container_name: linkedin_ai_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - linkedin_ai_network
+
+  # Backend API
+  backend:
+    build: .
+    container_name: linkedin_ai_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/linkedin_ai
+      - REDIS_URL=redis://redis:6379/0
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    networks:
+      - linkedin_ai_network
+
+  # Frontend (to be implemented)
+  # frontend:
+  #   build: ./frontend
+  #   container_name: linkedin_ai_frontend
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - linkedin_ai_network
+
+volumes:
+  postgres_data:
+
+networks:
+  linkedin_ai_network:
+    driver: bridge

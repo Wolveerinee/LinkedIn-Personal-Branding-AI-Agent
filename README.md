@@ -185,10 +185,9 @@ If you encounter issues with Docker:
 4. Push to your branch
 5. Create a pull request
 
-## License
 
-This project is licensed under the MIT License.
 
 ## Contact
 
 For technical questions, contact: tech-support@influence-os.com
+

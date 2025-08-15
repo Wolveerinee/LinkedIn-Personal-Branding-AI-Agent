@@ -187,7 +187,3 @@ If you encounter issues with Docker:
 
 
 
-## Contact
-
-For technical questions, contact: tech-support@influence-os.com
-
